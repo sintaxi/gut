@@ -2,7 +2,7 @@
   "name": "gut",
   "version": "0.1.0",
   "description": "recursively guts files from directory",
-  "main": "lib/index.js",
+  "main": "gut.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha"
   },
