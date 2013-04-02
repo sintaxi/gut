@@ -10,9 +10,7 @@ describe("all", function(){
   var outputPath = path.join(__dirname, "fixtures", "output")
     
   before(function(done){
-    fse.copy(sourcePath, outputPath, function(){
-      done()
-    })
+    fse.copy(sourcePath, outputPath, done)
   })
   
   it("should exist", function(done){
@@ -21,15 +19,18 @@ describe("all", function(){
   })
   
   it("should remove files", function(done){
-    gut(outputPath, [], function(err){
+    gut(outputPath, ["goodbye.txt", "removeme"], function(err){
+      fse.existsSync(path.join(outputPath, "goodbye.txt")).should.not.be.true
+      fse.existsSync(path.join(outputPath, "foo", "bar", "goodbye.txt")).should.not.be.true
+      fse.existsSync(path.join(outputPath, "foo", "bar", "removeme")).should.not.be.true
+      fse.existsSync(path.join(outputPath, "foo", "bar", "removeme", "done.txt")).should.not.be.true
+      fse.existsSync(path.join(outputPath, "foo", "bar", "baz.txt")).should.be.true
       done()
     })
   })
   
   after(function(done){
-    fse.remove(outputPath, function(){
-      done()
-    })
+    fse.remove(outputPath, done)
   })
   
 })
