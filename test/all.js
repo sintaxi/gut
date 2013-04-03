@@ -19,7 +19,7 @@ describe("all", function(){
   })
   
   it("should remove files", function(done){
-    gut(outputPath, ["goodbye.txt", "removeme"], function(err){
+    gut(outputPath, ["goodbye.txt", "removeme", "ditch"], function(err){
       fse.existsSync(path.join(outputPath, "goodbye.txt")).should.not.be.true
       fse.existsSync(path.join(outputPath, "foo", "bar", "goodbye.txt")).should.not.be.true
       fse.existsSync(path.join(outputPath, "foo", "bar", "removeme")).should.not.be.true
@@ -29,8 +29,8 @@ describe("all", function(){
     })
   })
   
-  after(function(done){
-    fse.remove(outputPath, done)
-  })
+  // after(function(done){
+  //   fse.remove(outputPath, done)
+  // })
   
 })
