@@ -1,6 +1,6 @@
 {
   "name": "gut",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "recursively guts files from directory",
   "main": "gut.js",
   "scripts": {
@@ -9,8 +9,7 @@
   "author": "Brock Whitten <brock@chloi.io>",
   "license": "MIT",
   "dependencies": {
-    "fs-extra": "0.6.0",
-    "findit": "0.1.2"
+    "fs-extra": "0.6.0"
   },
   "devDependencies":{
     "mocha": "1.8.2",

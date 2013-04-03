@@ -1,24 +1,41 @@
 var path  = require('path')
 var fse   = require('fs-extra')
-var find  = require('findit').find
 
 module.exports = function(projectPath, patterns, callback){
-
-  var dir     = path.resolve(projectPath)
-  var finder  = find(dir)
-
-  finder.on('path', function (p) {
-    if(patterns.indexOf(path.basename(p)) !== -1){
-      fse.remove(p)
-    }
-  })
   
-  finder.once('end', function (file) {
-    callback()
-  })
+  var walk = function(dir, done) {
+    
+    fse.readdir(dir, function(err, list) {
+      if (err) return done(err)
+    
+      var pending = list.length
+
+      if (!pending) return done(null)
+      list.forEach(function(file) {
+      
+        file = path.resolve(dir, file)
+        fse.stat(file, function(err, stat) {          
+          var cb = function(err, res) {
+            if (!--pending) done(null)
+          }
+      
+          if(patterns.indexOf(path.basename(file)) !== -1){
+            fse.remove(file, cb)
+          }else{
+            if(stat.isDirectory()){
+              walk(file, cb)
+            }else{
+              cb()
+            }
+          }
+          
+        })
+      
+      })
+    })
+    
+  }
   
-  finder.once('error', function (err) {
-    callback(err)
-  })
+  walk(path.resolve(projectPath), callback)
   
 }
