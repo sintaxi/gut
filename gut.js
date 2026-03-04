@@ -1,24 +1,23 @@
-var path  = require('path')
-var fse   = require('fs-extra')
-var find  = require('findit').find
+var fs   = require('fs/promises')
+var path = require('path')
 
-module.exports = function(projectPath, patterns, callback){
+module.exports = function(projectPath, patterns, callback) {
+  var dir = path.resolve(projectPath)
 
-  var dir     = path.resolve(projectPath)
-  var finder  = find(dir)
+  var promise = fs.readdir(dir, { recursive: true }).then(function(entries) {
+    var removals = entries
+      .filter(function(entry) {
+        return patterns.indexOf(path.basename(entry)) !== -1
+      })
+      .map(function(entry) {
+        return fs.rm(path.join(dir, entry), { recursive: true, force: true })
+      })
+    return Promise.all(removals)
+  })
 
-  finder.on('path', function (p) {
-    if(patterns.indexOf(path.basename(p)) !== -1){
-      fse.remove(p)
-    }
-  })
-  
-  finder.once('end', function (file) {
-    callback()
-  })
-  
-  finder.once('error', function (err) {
-    callback(err)
-  })
-  
+  if (typeof callback === 'function') {
+    promise.then(function() { callback() }).catch(callback)
+  }
+
+  return promise
 }

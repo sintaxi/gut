@@ -4,16 +4,14 @@
   "description": "recursively guts files from directory",
   "main": "gut.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha"
+    "test": "mocha"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "author": "Brock Whitten <brock@chloi.io>",
   "license": "MIT",
-  "dependencies": {
-    "fs-extra": "0.6.0",
-    "findit": "0.1.2"
-  },
-  "devDependencies":{
-    "mocha": "1.8.2",
-    "should": "1.2.2"
+  "devDependencies": {
+    "mocha": "^11.1.0"
   }
 }
