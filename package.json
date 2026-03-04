@@ -4,6 +4,8 @@
   "description": "recursively guts files from directory",
   "main": "gut.js",
   "scripts": {
+    "preversion": "npm test",
+    "version": "npm publish",
     "test": "mocha"
   },
   "engines": {
